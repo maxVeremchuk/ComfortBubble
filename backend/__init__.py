@@ -1,0 +1,1 @@
+"""Floor-plan parsing service."""

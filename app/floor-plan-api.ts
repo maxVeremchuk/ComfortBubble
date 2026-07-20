@@ -1,0 +1,10 @@
+export type Point = { x: number; y: number };
+export type ParsedWall = { id: string; start: Point; end: Point; thickness: number; confidence: number };
+export type ParsedWindow = { id: string; start: Point; end: Point; wallId: string; confidence: number };
+export type ParsedFloorPlan = { image: { width: number; height: number }; walls: ParsedWall[]; windows: ParsedWindow[] };
+export type GridGeometry = { kind: "wall" | "window"; x: number; y: number };
+const apiBaseUrl = process.env.NEXT_PUBLIC_FLOOR_PLAN_API_URL ?? "http://localhost:8000";
+export async function parseFloorPlan(file: File): Promise<ParsedFloorPlan> { const body=new FormData(); body.append("file",file); let response:Response; try { response=await fetch(`${apiBaseUrl}/api/floor-plans/parse`,{method:"POST",body}); } catch { throw new Error("Could not reach the floor-plan service. Check that the backend is running."); } const payload=await response.json().catch(()=>({})); if(!response.ok) throw new Error(typeof payload.detail==="string"?payload.detail:"Could not parse that floor plan."); return payload as ParsedFloorPlan; }
+const gridPoint=({x,y}:Point,width:number,height:number)=>({x:Math.max(0,Math.min(width-1,Math.round(x*(width-1)))),y:Math.max(0,Math.min(height-1,Math.round(y*(height-1))))});
+function line(start:Point,end:Point,width:number,height:number){const a=gridPoint(start,width,height),b=gridPoint(end,width,height),steps=Math.max(Math.abs(b.x-a.x),Math.abs(b.y-a.y),1);return Array.from({length:steps+1},(_,step)=>({x:Math.round(a.x+(b.x-a.x)*step/steps),y:Math.round(a.y+(b.y-a.y)*step/steps)}));}
+export function floorPlanToGrid(plan:ParsedFloorPlan,width:number,height:number):GridGeometry[]{const placements=new Map<string,GridGeometry>();for(const wall of plan.walls)for(const point of line(wall.start,wall.end,width,height))placements.set(`${point.x},${point.y}`,{kind:"wall",...point});for(const window of plan.windows)for(const point of line(window.start,window.end,width,height))placements.set(`${point.x},${point.y}`,{kind:"window",...point});return[...placements.values()];}
