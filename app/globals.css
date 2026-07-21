@@ -13,7 +13,7 @@
 .four-speeds{grid-template-columns:repeat(4,1fr)}
 .object-table,.object-sofa,.object-furniture{background:#bfc7c3b8;color:#f3f5f4;font-size:15px;text-shadow:0 1px 2px #29312e}
 .object-thermostat{background:#eff5f2;color:#17231f;text-shadow:none;font-size:6px;border-radius:3px;box-shadow:0 0 8px #fff8}
-.object-thermostat{width:44px;height:22px;inset:50% auto auto 50%;transform:translate(-50%,-50%);z-index:9;border:2px solid #fff}
+.object-thermostat{background:#8f9190;width:44px;height:22px;inset:50% auto auto 50%;transform:translate(-50%,50%);z-index:9;border:2px solid #8f9190}
 .thermal-cell.has-table .object-table,.thermal-cell.has-sofa .object-sofa,.thermal-cell.has-furniture .object-furniture{cursor:grab}
 .comfort-setting span{font-size:0}.comfort-setting span:after{content:"AVATAR COMFORT TARGET";font-size:8px}
 .decision-label span{font-size:0}.decision-label span:after{content:"PREDICTIVE AVATAR CONTROL";font-size:7px}

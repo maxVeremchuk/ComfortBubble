@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
@@ -50,3 +52,19 @@ class FloorPlan(BaseModel):
         if invalid:
             raise ValueError("windows must reference a detected wall")
         return self
+
+
+class ThermostatTemperatureRequest(BaseModel):
+    temperature: float = Field(ge=10, le=35)
+    entityNumber: int = Field(default=1, ge=1, le=50)
+
+
+class ThermostatModeRequest(BaseModel):
+    mode: Literal["cool", "heat", "auto", "off"]
+    entityNumber: int = Field(default=1, ge=1, le=50)
+
+
+class ThermostatState(BaseModel):
+    currentTemperature: float | None = None
+    targetTemperature: float | None = None
+    mode: str | None = None

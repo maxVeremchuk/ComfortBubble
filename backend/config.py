@@ -7,6 +7,10 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:3000,http://localhost:5173"
     max_upload_bytes: int = 10 * 1024 * 1024
     gemini_model: str = "gemini-3.5-flash"
+    home_assistant_url: str = "http://localhost:8123"
+    home_assistant_token: str | None = None
+    home_assistant_thermostat: str = "climate.living_room_thermostat"
+    home_assistant_thermostat_pattern: str | None = None
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
