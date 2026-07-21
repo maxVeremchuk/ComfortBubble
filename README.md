@@ -53,10 +53,11 @@ The ETA starts from the room area, airflow travel distance, number of ACs, and t
    cp .env.example .env
    ```
 
-3. Edit `.env` and set at least `GEMINI_API_KEY`. Configure Home Assistant values only when you intend to send real thermostat commands.
+3. Edit `.env` and set `GEMINI_API_KEY`, if you want to upload a floor plan image sample. Configure Home Assistant values only when you intend to send real thermostat commands.
 
 4. Start the Python backend in one terminal:
 
+   Windows:
    ```powershell
    python -m venv .venv
    .\.venv\Scripts\Activate.ps1
@@ -64,6 +65,13 @@ The ETA starts from the room area, airflow travel distance, number of ACs, and t
    uvicorn backend.main:app --reload --port 8000
    ```
 
+   Linux/MacOS:
+   ```shell
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r backend/requirements.txt
+   uvicorn backend.main:app --reload --port 8000
+   ```
 5. Start the frontend in another terminal:
 
    ```powershell
