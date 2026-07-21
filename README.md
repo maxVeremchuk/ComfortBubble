@@ -23,7 +23,7 @@ cells. The supplied sample is available at `public/sample-floor-plan.png`.
 
 ```bash
 cp .env.example .env
-# Set GEMINI_API_KEY in .env
+# Set GEMINI_API_KEY and HOME_ASSISTANT_TOKEN in .env
 python -m venv .venv
 .venv\\Scripts\\activate  # Windows PowerShell
 pip install -r backend/requirements.txt
@@ -33,6 +33,20 @@ uvicorn backend.main:app --reload --port 8000
 In a second terminal, run `npm run dev`. The frontend reads
 `NEXT_PUBLIC_FLOOR_PLAN_API_URL` from `.env` and defaults to
 `http://localhost:8000`. To run backend tests, use `pytest backend/tests`.
+
+### Home Assistant control
+
+The frontend sends real thermostat commands only to the local FastAPI backend;
+the Home Assistant token is never exposed to the browser. Set
+`HOME_ASSISTANT_TOKEN` and, if needed, change `HOME_ASSISTANT_URL` or
+`HOME_ASSISTANT_THERMOSTAT` in `.env`. The simulator sends a new temperature
+when its setpoint changes, and sends `cool` or `off` only when the selected AC
+state changes.
+
+For multiple thermostats, set `HOME_ASSISTANT_THERMOSTAT_PATTERN` to an entity
+template such as `climate.living_room_thermostat_{number}`. The first thermostat
+on the grid controls entity 1, the next controls entity 2, and removing a grid
+thermostat reindexes the remaining entities automatically.
 
 This starter does not use `wrangler.jsonc`.
 
